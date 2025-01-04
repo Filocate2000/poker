@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cardmeister.github.io/elements.cardmeister.full.js"></script>
+  <title>Player Hands</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 10px;
+      padding: 0;
+    }
+    #player-hands {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .hand {
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+    .hand strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+    playing-card {
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="player-hands"></div>
+  <script>
+    window.addEventListener('message', (event) => {
+      const { type, hands } = event.data;
+      if (type === 'dealPlayers') {
+        const handsDiv = document.getElementById('player-hands');
+        handsDiv.innerHTML = ''; // Clear previous hands
+        hands.forEach((hand, index) => {
+          const handDiv = document.createElement('div');
+          handDiv.className = 'hand';
+          handDiv.innerHTML = `<strong>Player ${index + 1}:</strong>`;
+          hand.forEach(card => {
+            const cardElement = document.createElement('playing-card');
+            cardElement.setAttribute('suit', card.suit);
+            cardElement.setAttribute('rank', card.rank);
+            handDiv.appendChild(cardElement);
+          });
+          handsDiv.appendChild(handDiv);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cardmeister.github.io/elements.cardmeister.full.js"></script>
+  <title>Community Cards</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 10px;
+      padding: 0;
+    }
+    #community-cards {
+      display: flex;
+      gap: 10px;
+    }
+    playing-card {
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="community-cards"></div>
+  <script>
+    window.addEventListener('message', (event) => {
+      const { type, communityCards } = event.data;
+      const cardsDiv = document.getElementById('community-cards');
+      if (type === 'resetCommunityCards') {
+        cardsDiv.innerHTML = ''; // Clear all cards
+      } else if (['dealFlop', 'dealTurn', 'dealRiver'].includes(type)) {
+        cardsDiv.innerHTML = ''; // Clear existing cards
+        communityCards.forEach(card => {
+          const cardElement = document.createElement('playing-card');
+          cardElement.setAttribute('suit', card.suit);
+          cardElement.setAttribute('rank', card.rank);
+          cardsDiv.appendChild(cardElement);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
