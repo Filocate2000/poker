@@ -8,33 +8,35 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 10px;
-      padding: 0;
+      background-color: #f0f0f0;
+      margin: 20px;
     }
-    #community-cards {
+    .cards {
       display: flex;
       gap: 10px;
     }
     playing-card {
-      margin-right: 5px;
+      margin: 5px;
     }
   </style>
 </head>
 <body>
-  <div id="community-cards"></div>
+  <div id="community-cards" class="cards">
+    <!-- Test cards -->
+    <playing-card suit="Diamonds" rank="Queen"></playing-card>
+    <playing-card suit="Clubs" rank="King"></playing-card>
+  </div>
+
   <script>
     window.addEventListener('message', (event) => {
       const { type, communityCards } = event.data;
-      const cardsDiv = document.getElementById('community-cards');
-      if (type === 'resetCommunityCards') {
-        cardsDiv.innerHTML = ''; // Clear all cards
-      } else if (['dealFlop', 'dealTurn', 'dealRiver'].includes(type)) {
-        cardsDiv.innerHTML = ''; // Clear existing cards
+      if (['dealFlop', 'dealTurn', 'dealRiver'].includes(type)) {
+        const communityCardsContainer = document.getElementById('community-cards');
         communityCards.forEach(card => {
           const cardElement = document.createElement('playing-card');
           cardElement.setAttribute('suit', card.suit);
           cardElement.setAttribute('rank', card.rank);
-          cardsDiv.appendChild(cardElement);
+          communityCardsContainer.appendChild(cardElement);
         });
       }
     });
